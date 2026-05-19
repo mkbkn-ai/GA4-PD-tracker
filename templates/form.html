@@ -1,1 +1,31 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lead Form</title>
+  <script>
+    function getParam(name) {
+      let regex = new RegExp('[?&]' + name + '=([^&#]*)', 'i');
+      let result = regex.exec(window.location.search);
+      return result ? decodeURIComponent(result[1]) : '';
+    }
+    window.onload = function() {
+      ['utm_source', 'utm_medium', 'utm_campaign', 'gclid'].forEach(function(param) {
+        document.getElementById(param).value = getParam(param) || localStorage.getItem(param) || '';
+        if(getParam(param)) localStorage.setItem(param, getParam(param));
+      });
+    };
+  </script>
+</head>
+<body>
+  <h1>Contact Us</h1>
+  <form method="POST" action="/submit">
+    Name: <input type="text" name="name" required><br>
+    Email: <input type="email" name="email" required><br>
+    <input type="hidden" id="utm_source" name="utm_source">
+    <input type="hidden" id="utm_medium" name="utm_medium">
+    <input type="hidden" id="utm_campaign" name="utm_campaign">
+    <input type="hidden" id="gclid" name="gclid">
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
